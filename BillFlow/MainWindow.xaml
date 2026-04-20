@@ -1,0 +1,128 @@
+﻿<Window x:Class="BillFlow.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="BillFlow - Управление" Height="600" Width="900" Loaded="Window_Loaded">
+    <Grid>
+        <TabControl x:Name="MainTabs">
+            <TabItem Header="Платежи">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <DockPanel>
+                        <Button DockPanel.Dock="Bottom" x:Name="btnDeletePayment" Content="Удалить выбранный платеж" 
+                        Background="#FFFFCCCC" Click="BtnDeletePayment_Click" Visibility="Collapsed"/>
+                        <DataGrid x:Name="dgPayments" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,0,0,5">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="№" Binding="{Binding Id}" />
+                                <DataGridTextColumn Header="Дата" Binding="{Binding Date}" />
+                                <DataGridTextColumn Header="Клиент" Binding="{Binding ClientName}" />
+                                <DataGridTextColumn Header="Сумма" Binding="{Binding TotalSum}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+
+                    <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                        <TextBlock Text="Новый платеж" FontWeight="Bold"/>
+                        <ComboBox x:Name="cmbClients" DisplayMemberPath="full_name" SelectedValuePath="Id" Margin="0,5"/>
+
+                        <GroupBox Header="Добавить услугу">
+                            <StackPanel>
+                                <ComboBox x:Name="cmbServices" DisplayMemberPath="service_name" SelectedValuePath="Id" Margin="5"/>
+                                <DockPanel Margin="5">
+                                    <TextBlock Text="Кол-во: " VerticalAlignment="Center"/>
+                                    <TextBox x:Name="txtAmount" Text="1" Width="50" HorizontalAlignment="Left"/>
+                                </DockPanel>
+                                <Button Content="Добавить в чек" Click="BtnAddServiceToCart_Click" Margin="5"/>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <ListBox x:Name="lstCart" Height="150" Margin="0,10" DisplayMemberPath="DisplayText"/>
+                        <TextBlock x:Name="txtTotal" Text="Итого: 0 руб." FontWeight="Bold"/>
+                        <Button Content="Провести" Click="BtnSavePayment_Click" Margin="0,10" Height="30" Background="LightGreen"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Клиенты">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <DockPanel>
+                        <Button DockPanel.Dock="Bottom" x:Name="btnDeleteClient" Content="Удалить клиента" Click="BtnDeleteClient_Click" Visibility="Collapsed"/>
+                        <DataGrid x:Name="dgClients" AutoGenerateColumns="False" Margin="0,0,10,0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="№" Binding="{Binding Id}" />
+                                <DataGridTextColumn Header="ФИО" Binding="{Binding Full_name}" />
+                                <DataGridTextColumn Header="Контакты" Binding="{Binding Сontact_info}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Добавить клиента" FontWeight="Bold"/>
+                        <TextBox x:Name="newClientName" Margin="0,5" Tag="ФИО" Text="ФИО"/>
+                        <TextBox x:Name="newClientContact" Margin="0,5" Tag="Контакты" Text="Контакты" />
+                        <Button Content="Сохранить" Click="BtnAddClient_Click"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Услуги">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <DockPanel>
+                        <Button DockPanel.Dock="Bottom" x:Name="btnDeleteService" Content="Удалить услугу" Click="BtnDeleteService_Click" Visibility="Collapsed"/>
+                        <DataGrid x:Name="dgServices" AutoGenerateColumns="False" Margin="0,0,10,0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="№" Binding="{Binding Id}" />
+                                <DataGridTextColumn Header="Название" Binding="{Binding Service_name}" />
+                                <DataGridTextColumn Header="Текущая стоимость" Binding="{Binding Current_price}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Новая услуга" FontWeight="Bold"/>
+                        <TextBox x:Name="newSvcName" Margin="0,5" Text="Название"/>
+                        <TextBox x:Name="newSvcPrice" Margin="0,5" Text="стоимость"/>
+                        <Button Content="Добавить" Click="BtnAddService_Click"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <TabItem x:Name="tabAdmin" Header="Администрирование" Visibility="Hidden">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <DockPanel>
+                        <Button DockPanel.Dock="Bottom" Content="Удалить пользователя" Click="BtnDeleteUser_Click"/>
+                        <DataGrid x:Name="dgUsers" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="№" Binding="{Binding Id}" />
+                                <DataGridTextColumn Header="Логин" Binding="{Binding Username}" />
+                                <DataGridTextColumn Header="Роль" Binding="{Binding User_role}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Новый пользователь" FontWeight="Bold"/>
+                        <TextBox x:Name="newUserName" Margin="0,5"/>
+                        <PasswordBox x:Name="newUserPass" Margin="0,5"/>
+                        <ComboBox x:Name="cmbRoles" Margin="0,5">
+                            <ComboBoxItem Content="admin"/>
+                            <ComboBoxItem Content="user" IsSelected="True"/>
+                        </ComboBox>
+                        <Button Content="Создать аккаунт" Click="BtnAddUser_Click"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

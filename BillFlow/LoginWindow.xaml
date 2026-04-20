@@ -1,0 +1,11 @@
+﻿<Window x:Class="BillFlow.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Авторизация" Height="300" Width="300" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+    <StackPanel Margin="30" VerticalAlignment="Center">
+        <TextBlock Text="Авторизация BillFlow" FontSize="18" FontWeight="Bold" Margin="0,0,0,20" HorizontalAlignment="Center"/>
+        <TextBox x:Name="txtUsername" Margin="0,0,0,10" Padding="5" />
+        <PasswordBox x:Name="txtPassword" Margin="0,0,0,20" Padding="5"/>
+        <Button Content="Войти" Padding="5" Click="BtnLogin_Click"/>
+    </StackPanel>
+</Window>
